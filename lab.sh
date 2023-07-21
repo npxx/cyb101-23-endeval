@@ -40,18 +40,17 @@ echo "" >> "$outp"
 awk -F',' '
 BEGIN { bach = 0 }
 {
-    $3 == "Bachelor'"'"'s"
+    if($3 == "Bachelor'"'"'s")
 {
-  print $1 $2 $3
+  print $1
   bach = bach + 1
 }
 }
+
 END {
   print "Count: " bach
 }
 ' "$inp" >> "$outp"
-
-## Printing 1, 2, 3 for debugging
 
 ### PART 5 ###
 
@@ -69,30 +68,27 @@ echo "" >> "$outp"
 
 awk -F ',' '
 BEGIN {
-    maxCount = 5
 }
 
 {
-    lines[NR] = $0
     earnings[NR] = $16
     name[NR] = $1
 }
 
 END {
-    n = length(lines)
+    n = length(name)
 
-    for (i = 1; i <= n - 1; i++) {
-        for (j = 1; j <= n - i; j++) {
-            if (earnings[j] < earnings[j+1]) {
+    for (i = 1; i < n; i++) {
+        for (j = 1; j < n - i; j++) {
+            if ((earnings[j] - 0) < (earnings[j+1] - 0))
+            {
                 swap(earnings, j, j+1)
-                swap(lines, j, j+1)
+                swap(name, j, j+1)
             }
         }
     }
 
-    count = (n > maxCount) ? maxCount : n
-
-    for (i = 1; i <= count + 1; i++) {
+    for (i = 1; i <= 6; i++) {
         print name[i] ": " earnings[i] >> "'"$outp"'"
     }
 }
@@ -102,6 +98,22 @@ function swap(arr, i, j) {
     arr[i] = arr[j]
     arr[j] = temp
 }' "$inp" >> "$outp"
+
+
+## Debugging Stuff
+                # print earnings[j] " < " earnings[j+1]
+                # print "so moved " earnings[j] " to " j+1
+
+        # print "After one"
+        #     for (i = 1; i <= 6; i++) {
+        # print name[i] ": " earnings[i] >> "'"$outp"'"
+
+
+## Special note :
+
+# I did 'earnings[j] - 0' to convert it into numerical
+# Earlier, the top two colleges which had their MedEarnings > 100000 were shown at the bottom of list
+# instead of being top two because the comparison was being lexicographic!!
 
 ### DONE ###
 
