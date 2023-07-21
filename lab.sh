@@ -88,7 +88,7 @@ END {
         }
     }
 
-    for (i = 1; i <= 6; i++) {
+    for (i = 1; i <= 5; i++) {
         print name[i] ": " earnings[i] >> "'"$outp"'"
     }
 }
@@ -119,3 +119,4 @@ function swap(arr, i, j) {
 
 echo "Stuff done and exported to $outp!"
 echo "Sayonara!"
+
